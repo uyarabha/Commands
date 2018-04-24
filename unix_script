@@ -1,0 +1,43 @@
+######To find which shell your in#####################
+$ echo $0
+-ksh
+ 
+########To find what are shells available
+$ cat /etc/shells
+/bin/sh
+/bin/bash
+/sbin/nologin
+/bin/dash
+/bin/tcsh
+/bin/csh
+/bin/ksh
+
+########To know where bash is located
+$ which bash
+/bin/bash
+
+########To give execute permition to file for you, group, other user
+ $chmod +x date.ksh
+
+#System variables will be in capital letters
+#User variables will defined in small letters but you can define in capital also
+example
+$echo $BASH_VERSION
+
+########To take arguments, passed while running script
+echo $1 $2
+
+########To take arguments into array,passed  while running script
+args= ("$@")
+echo ${args[0]} ${args[1]}
+
+########To get number of arguments passed  while running script
+echo $#
+
+######## Integer conparision
+-eq  if[ $count -eq 10] then echo "number is ten"
+-ne
+-gt
+-ge
+-lt
+-le
