@@ -1,0 +1,146 @@
+-------------------get help-----------------------------
+sL_scmsa@tbldaclt02apd-hdp.tdc.vzwcorp.com-/home/sL_scmsa $ ls --help
+
+-------------------------------------------------------------
+View file
+$cat filename  (but will go end of the file if the file is too big you can see the begining)
+$cat filename | less (you scroll thorught the file)
+$cat filename | pg (you scroll pages using enter key)
+$cat filename | more (you scroll pages using enter key)
+
+--------------------------------------------
+ls -lsS
+
+-lsS   l=long list
+       s= size
+       S= sort by size  
+       t= sort by time
+-------------------------------------------------------
+find the number of lines in a file.
+
+wc -l filename
+------------------------------------------------------
+moving data from multiple files to single file
+
+cat 00* >destinationfile.txt
+
+here source files are 000_0, 000_1,000_2,000_3
+
+---- find the file names-------find always goes recursively-----------------------------------------------------
+
+$find <path> <search criteria> <action>
+
+Find based on permission :$ find . -type f -perm 7777
+Find based on permission :$ find . -type f -perm 7777 -exec chmod 755 {} \;
+({}-- is place holder. \; is end of command)
+
+Find based on time : $find . -mtime -2     (files change in less than 2 days)
+Find based on time minutes$ find . -mmin +10   (file changed in more than 10 minutes)
+Find in the time range(more than 1 min and less than 10 days): $ find . -mmin +1 -mtime -10
+
+
+
+
+Find based on size (less then 1MB): $ find . -size -1M
+
+
+1) find the file names which have specific string in the files name. here I am looking for a string 'hpa'
+find . -name '*hpa*' -ls
+
+
+2) find the file names which have specific string in the files content. here I am looking for a string 'hpa'
+
+find . -type f | xargs egrep -ail hpa 
+
+find . -type f | xargs egrep -ail ing_wrk_inc_join_recv_crw_daily_returns.hql
+
+3)find the files which have specific word in it(word is "workFlowName", location is 'scmsa/scmsa_ingest/hive/')
+
+----- locating a file---------------------------------------------------------
+Find the files and its path which have ‘aging’ in it’s name
+$locate -i *aging*
+
+-----------------------Search with in a file-----------------------------------
+  $grep 'search word' filename.txt 
+
+  to make it case insensitive  $grep -i 'search word' filename.txt
+  to make it case Sensitive exact match $grep -I 'search word' filename.txt
+  to make it regEX $grep -i '*search*' *.txt
+  to search exact word with new case sensitive: $grep -iw '*search*' *.txt
+  if you want n lines after the match  : $grep -A n  'word' *.txt
+  if you want n lines after the match  : $grep -B n  'word' *.txt
+  if you want n lines before and after the match  : $grep -C n  'word' *.txt  
+  search recursively in subfolders also: $grep -r 'word' *
+  search files not have this word(invert): $grep -v 'word' *
+  show line number in result: $grep -rnw  "workFlowName" 'scmsa/scmsa_ingest/hive/'
+  total word count in a files : $grep -ri 'hive_ing' * | wc -l  
+  count the number of matches in each file : $grep -rc 'word' abc.txt
+  show position of match in line: $grep -o  -b "hive_ing" lnd_ing_inc_aging_snap_shot.hql  (-b show position, -o  match only string)
+
+-----------------To run .ksh file in back ground-------------------------------------------------
+ nohup ksh abc.ksh &
+
+in this case log goes to nohup.out so  to see log
+cat nohup.out
+
+-------------------To find whether the user exist in the UNIX system--------------
+finger userID
+
+----------To find the groups ID belongs----------------------
+groups yarabug
+
+----------------scheduling cronjob-------------------
+crontab -l
+
+crontab -e  edit the entires
+
+---------------------diferrences--------------------
+
+diff -rq folder1 folder2
+
+r=recusrive
+q=show only differed files
+
+------------------
+cp -P file1 flile2
+
+-------------------
+chmod -R 777
+
+-----------------
+chown -R yarabug dir1
+
+---------------------
+
+!mkdir   to recall previous mkdir
+
+-----------------------------------------
+df .     disk free space
+----------------------------------------------
+du -sk * | sort -n
+
+s= total size
+k= Kilo bytes
+sort -n = do numeric sort
+------------------------------
+du -skh *
+--------------------------------------
+To find the RAM size of the nox
+free -h
+---------------------------------------
+man     = for help
+-------------------------
+more fileName
+----------------we can use VI commands in less----------------------------
+less fineName   
+1G  takes to fistline
+100G   got to 100 th line
+G end of the file
+----------------------------------------------------------------------------------------
+Copying production files to dev box
+
+(scm_env3) sL_scmsa:properties$ scp *.* yarabug@tbldagtw01adv-hdp.tdc.vzwcorp.com:/tmp/yarabug
+------------------------------------------------------------------------------------------------------
+copying files from hadoop gateway to informatica using CFI
+export CFROOT=/opt/cyberfusion
+/opt/cyberfusion/cfsend lf:/home/sD_scmsa/scmsa/incoming/asurion/vzw_po/* rf:/backup/incoming/scm/Asurion/vzw_po/* n:OBSITVPRLZT01
